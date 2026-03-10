@@ -94,25 +94,26 @@ function PriceTicker() {
     return () => clearInterval(iv)
   }, [])
 
-  const pill = {
-    display: 'flex', alignItems: 'center', gap: '14px',
-    background: 'rgba(6,3,0,0.90)',
-    border: '1px solid rgba(180,100,10,0.6)',
-    borderRadius: '10px',
-    padding: '16px 22px',
-    backdropFilter: 'blur(20px)',
-    boxShadow: '0 2px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,200,80,0.06)',
-  }
+  const seg = { display: 'flex', alignItems: 'center', gap: '14px', padding: '16px 22px' }
+  const divider = { width: '1px', alignSelf: 'stretch', background: 'rgba(180,100,10,0.35)', flexShrink: 0 }
 
   return (
     <motion.div
       initial={{ y: 24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.2, duration: 0.6 }}
-      style={{ display: 'flex', gap: '10px', width: '100%', flexWrap: 'wrap' }}
+      style={{
+        display: 'flex', width: '100%',
+        background: 'rgba(6,3,0,0.93)',
+        border: '1px solid rgba(180,100,10,0.55)',
+        borderTop: '2px solid rgba(232,160,32,0.65)',
+        borderRadius: '10px',
+        overflow: 'hidden',
+        boxShadow: '0 4px 32px rgba(0,0,0,0.55), 0 0 24px rgba(232,160,32,0.1)',
+      }}
     >
       {/* BTC */}
-      <div style={{ ...pill, flex: 1, minWidth: 0, borderTop: '2px solid #E8A020', boxShadow: '0 2px 24px rgba(0,0,0,0.5), 0 0 20px rgba(232,160,32,0.12)' }}>
+      <div style={{ ...seg, flex: 1, minWidth: 0 }}>
         <div style={{
           width: '44px', height: '44px', borderRadius: '50%', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -132,14 +133,13 @@ function PriceTicker() {
         </div>
       </div>
 
+      <div style={divider} />
+
       {/* CHAOS NEWS */}
       <a href="#news" style={{
-        ...pill,
+        ...seg,
         flex: '0 0 auto',
-        background: 'rgba(40,6,0,0.96)',
-        border: '1px solid rgba(255,70,0,0.65)',
-        borderTop: '2px solid #FF4500',
-        boxShadow: '0 2px 24px rgba(0,0,0,0.5), 0 0 32px rgba(255,60,0,0.25)',
+        background: 'rgba(35,5,0,0.7)',
         cursor: 'pointer', textDecoration: 'none',
         animation: 'chaosGlow 2s ease-in-out infinite alternate',
         whiteSpace: 'nowrap', gap: '12px',
@@ -152,8 +152,10 @@ function PriceTicker() {
         <span className="live-pip" style={{ marginLeft: '2px', flexShrink: 0 }} />
       </a>
 
+      <div style={divider} />
+
       {/* FINE */}
-      <div style={{ ...pill, flex: 1, minWidth: 0, borderTop: '2px solid rgba(255,100,0,0.85)', boxShadow: '0 2px 24px rgba(0,0,0,0.5), 0 0 20px rgba(255,80,0,0.1)' }}>
+      <div style={{ ...seg, flex: 1, minWidth: 0 }}>
         <div style={{
           width: '44px', height: '44px', borderRadius: '50%', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',

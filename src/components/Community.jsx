@@ -30,6 +30,7 @@ const socials = [
 export default function Community() {
   return (
     <section id="community" style={{ position: 'relative', zIndex: 2, padding: '96px 24px' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'rgba(6,2,0,0.72)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 50% 30% at 50% 50%, rgba(255,80,0,0.06), transparent)', pointerEvents: 'none' }} />
 
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>

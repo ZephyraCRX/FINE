@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer style={{ position: 'relative', zIndex: 2, borderTop: '1px solid rgba(180,100,10,0.3)', padding: '48px 24px 32px' }}>
+    <footer style={{ position: 'relative', zIndex: 2, borderTop: '1px solid rgba(180,100,10,0.3)', padding: '48px 24px 32px', background: 'rgba(6,2,0,0.80)' }}>
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
 
         {/* Top row */}
