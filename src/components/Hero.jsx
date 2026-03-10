@@ -100,92 +100,92 @@ function PriceTicker() {
       initial={{ y: 24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.2, duration: 0.6 }}
-      style={{ display: 'flex', gap: '8px', width: '100%', flexWrap: 'wrap' }}
+      style={{ display: 'flex', gap: '6px', width: '100%', flexWrap: 'wrap' }}
     >
       {/* BTC */}
       <div style={{
-        flex: 1, display: 'flex', alignItems: 'center', gap: '12px',
-        background: 'linear-gradient(135deg, rgba(20,10,0,0.9) 0%, rgba(40,20,0,0.7) 100%)',
-        border: '1px solid rgba(232,160,32,0.35)',
-        borderTop: '2px solid rgba(232,160,32,0.6)',
-        padding: '12px 18px',
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 0 20px rgba(232,160,32,0.08), inset 0 1px 0 rgba(232,160,32,0.1)',
-        position: 'relative', overflow: 'hidden',
+        flex: 1, display: 'flex', alignItems: 'center', gap: '14px',
+        background: 'rgba(8,4,0,0.92)',
+        border: '1px solid rgba(232,160,32,0.55)',
+        borderTop: '3px solid #E8A020',
+        padding: '14px 20px',
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 0 0 1px rgba(232,160,32,0.08), 0 4px 32px rgba(0,0,0,0.6), 0 0 20px rgba(232,160,32,0.15)',
+        position: 'relative', overflow: 'hidden', minWidth: 0,
       }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 100% at 0% 50%, rgba(232,160,32,0.05), transparent)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, rgba(232,160,32,0.07), transparent)', pointerEvents: 'none' }} />
         <div style={{
-          width: '32px', height: '32px', borderRadius: '50%', flexShrink: 0,
+          width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '16px',
-          background: 'radial-gradient(circle, rgba(247,147,26,0.3) 0%, rgba(232,160,32,0.1) 100%)',
-          border: '1px solid rgba(247,147,26,0.5)',
-          boxShadow: '0 0 10px rgba(247,147,26,0.3)',
+          fontSize: '18px', fontWeight: 700, color: '#F7931A',
+          background: 'rgba(247,147,26,0.15)',
+          border: '1px solid rgba(247,147,26,0.6)',
+          boxShadow: '0 0 14px rgba(247,147,26,0.4)',
         }}>₿</div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: 'rgba(180,120,20,0.7)', textTransform: 'uppercase' }}>Bitcoin</span>
-          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '20px', color: 'var(--gold-bright)', letterSpacing: '1px', lineHeight: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: '#B07010', textTransform: 'uppercase', marginBottom: '2px' }}>Bitcoin</div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '22px', color: '#F5C842', letterSpacing: '1px', lineHeight: 1 }}>
             ${Math.round(btc).toLocaleString()}
-          </span>
+          </div>
         </div>
-        <span style={{ marginLeft: 'auto', fontSize: '11px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: btcUp ? '#40d080' : '#e05050', fontWeight: 700 }}>
+        <div style={{ fontSize: '12px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: btcUp ? '#3ed87a' : '#e05050', fontWeight: 700, flexShrink: 0 }}>
           {btcUp ? '▲' : '▼'} {btcUp ? '+' : ''}{((Math.random() * 0.8) + 0.1).toFixed(2)}%
-        </span>
+        </div>
       </div>
 
       {/* CHAOS NEWS */}
       <a href="#news" style={{
         flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: '10px',
-        background: 'linear-gradient(135deg, rgba(60,10,0,0.95) 0%, rgba(120,30,0,0.7) 50%, rgba(60,10,0,0.95) 100%)',
-        border: '1px solid rgba(255,80,0,0.5)',
-        borderTop: '2px solid rgba(255,100,0,0.8)',
-        padding: '12px 20px',
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 0 24px rgba(255,80,0,0.2), 0 0 48px rgba(255,80,0,0.08), inset 0 1px 0 rgba(255,100,0,0.2)',
+        background: 'rgba(50,8,0,0.95)',
+        border: '1px solid rgba(255,70,0,0.7)',
+        borderTop: '3px solid #FF4500',
+        padding: '14px 22px',
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 0 0 1px rgba(255,60,0,0.1), 0 4px 32px rgba(0,0,0,0.6), 0 0 30px rgba(255,60,0,0.3)',
         cursor: 'pointer', textDecoration: 'none',
         animation: 'chaosGlow 2s ease-in-out infinite alternate',
         position: 'relative', overflow: 'hidden',
         whiteSpace: 'nowrap',
       }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255,60,0,0.08), transparent)', pointerEvents: 'none' }} />
-        <span style={{ fontSize: '18px', animation: 'float 1.5s ease-in-out infinite alternate', display: 'inline-block' }}>🔥</span>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: 'rgba(255,120,40,0.7)', textTransform: 'uppercase' }}>Live Feed</span>
-          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '18px', color: '#FF6020', letterSpacing: '2px', lineHeight: 1, textShadow: '0 0 12px rgba(255,80,0,0.6)' }}>CHAOS NEWS</span>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, rgba(255,60,0,0.15), transparent)', pointerEvents: 'none' }} />
+        <span style={{ fontSize: '20px', animation: 'float 1.5s ease-in-out infinite alternate', display: 'inline-block', position: 'relative' }}>🔥</span>
+        <div>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: 'rgba(255,120,40,0.8)', textTransform: 'uppercase', marginBottom: '2px' }}>Live Feed</div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '20px', color: '#FF6030', letterSpacing: '2px', lineHeight: 1, textShadow: '0 0 16px rgba(255,80,0,0.8)' }}>CHAOS NEWS</div>
         </div>
-        <span className="live-pip" style={{ marginLeft: '4px' }} />
+        <span className="live-pip" style={{ marginLeft: '2px', flexShrink: 0 }} />
       </a>
 
       {/* FINE */}
       <div style={{
-        flex: 1, display: 'flex', alignItems: 'center', gap: '12px',
-        background: 'linear-gradient(135deg, rgba(20,10,0,0.9) 0%, rgba(40,20,0,0.7) 100%)',
-        border: '1px solid rgba(232,160,32,0.35)',
-        borderTop: '2px solid rgba(255,100,0,0.6)',
-        padding: '12px 18px',
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 0 20px rgba(255,80,0,0.08), inset 0 1px 0 rgba(255,100,0,0.1)',
-        position: 'relative', overflow: 'hidden',
+        flex: 1, display: 'flex', alignItems: 'center', gap: '14px',
+        background: 'rgba(8,4,0,0.92)',
+        border: '1px solid rgba(255,100,0,0.45)',
+        borderTop: '3px solid rgba(255,100,0,0.9)',
+        padding: '14px 20px',
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 0 0 1px rgba(255,80,0,0.06), 0 4px 32px rgba(0,0,0,0.6), 0 0 20px rgba(255,80,0,0.12)',
+        position: 'relative', overflow: 'hidden', minWidth: 0,
       }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 100% at 100% 50%, rgba(255,80,0,0.05), transparent)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, rgba(255,80,0,0.08), transparent)', pointerEvents: 'none' }} />
         <div style={{
-          width: '32px', height: '32px', borderRadius: '50%', flexShrink: 0,
+          width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '16px',
-          background: 'radial-gradient(circle, rgba(255,80,0,0.3) 0%, rgba(232,160,32,0.1) 100%)',
-          border: '1px solid rgba(255,80,0,0.4)',
-          boxShadow: '0 0 10px rgba(255,80,0,0.25)',
+          fontSize: '18px',
+          background: 'rgba(255,80,0,0.15)',
+          border: '1px solid rgba(255,80,0,0.5)',
+          boxShadow: '0 0 14px rgba(255,80,0,0.35)',
           animation: 'float 2s ease-in-out infinite alternate',
         }}>🔥</div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: 'rgba(180,120,20,0.7)', textTransform: 'uppercase' }}>$FINE</span>
-          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '20px', color: 'var(--gold-bright)', letterSpacing: '1px', lineHeight: 1 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: '#B07010', textTransform: 'uppercase', marginBottom: '2px' }}>$FINE</div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '22px', color: '#F5C842', letterSpacing: '1px', lineHeight: 1 }}>
             ${fine.toFixed(6)}
-          </span>
+          </div>
         </div>
-        <span style={{ marginLeft: 'auto', fontSize: '11px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: fineUp ? '#40d080' : '#e05050', fontWeight: 700 }}>
+        <div style={{ fontSize: '12px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: fineUp ? '#3ed87a' : '#e05050', fontWeight: 700, flexShrink: 0 }}>
           {fineUp ? '▲' : '▼'} {fineUp ? '+' : ''}{((Math.random() * 2) + 0.1).toFixed(2)}%
-        </span>
+        </div>
       </div>
     </motion.div>
   )
@@ -204,13 +204,6 @@ export default function Hero() {
 
   return (
     <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden', paddingTop: '72px', paddingBottom: '40px' }}>
-
-      {/* Background image */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-        <img src="/hero-bg.jpg" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', filter: 'brightness(0.55) saturate(1.1)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 35%, transparent 65%, rgba(12,4,0,0.8) 100%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 100% at 100% 50%, transparent 40%, rgba(0,0,0,0.5) 100%)' }} />
-      </div>
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', gap: '40px' }}>
