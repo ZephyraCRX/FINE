@@ -29,19 +29,20 @@ function ChaosCard() {
       initial={{ opacity: 0, x: 40 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.7, duration: 0.7 }}
-      className="w-full max-w-[260px]"
       style={{
-        background: 'var(--card-bg)',
-        border: '1px solid var(--card-border)',
+        background: 'rgba(6,2,0,0.88)',
+        border: '1px solid rgba(232,160,32,0.5)',
+        borderRadius: '12px',
         padding: '20px 22px',
-        backdropFilter: 'blur(12px)',
+        backdropFilter: 'blur(16px)',
+        boxShadow: '0 0 32px rgba(232,160,32,0.12), 0 8px 32px rgba(0,0,0,0.5)',
+        width: '240px',
       }}
     >
       <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '3px', color: '#a07020', marginBottom: '12px', textTransform: 'uppercase' }}>
         Global Chaos Level
       </div>
 
-      {/* Flames */}
       <div style={{ display: 'flex', gap: '6px', marginBottom: '10px' }}>
         {Array.from({ length: 5 }, (_, i) => (
           <span key={i} style={{
@@ -52,7 +53,6 @@ function ChaosCard() {
         ))}
       </div>
 
-      {/* Score */}
       <motion.div
         key={level}
         initial={{ scale: 1.08 }}
@@ -62,7 +62,6 @@ function ChaosCard() {
         {level} <span style={{ fontSize: '20px', color: '#6b4e10', fontFamily: 'Barlow, sans-serif', fontWeight: 400 }}>/ 100</span>
       </motion.div>
 
-      {/* Bar */}
       <div style={{ height: '4px', background: 'rgba(255,140,0,0.15)', borderRadius: '2px', marginBottom: '10px', overflow: 'hidden' }}>
         <div
           className="chaos-bar-fill"
@@ -89,101 +88,88 @@ function PriceTicker() {
 
   useEffect(() => {
     const iv = setInterval(() => {
-      setBtc(p => { const delta = (Math.random() - 0.49) * 180; setBtcUp(delta >= 0); return Math.max(60000, p + delta) })
-      setFine(p => { const mult = 1 + (Math.random() - 0.49) * 0.018; setFineUp(mult >= 1); return p * mult })
+      setBtc(p => { const d = (Math.random() - 0.49) * 180; setBtcUp(d >= 0); return Math.max(60000, p + d) })
+      setFine(p => { const m = 1 + (Math.random() - 0.49) * 0.018; setFineUp(m >= 1); return p * m })
     }, 3200)
     return () => clearInterval(iv)
   }, [])
+
+  const pill = {
+    display: 'flex', alignItems: 'center', gap: '14px',
+    background: 'rgba(6,3,0,0.90)',
+    border: '1px solid rgba(180,100,10,0.6)',
+    borderRadius: '10px',
+    padding: '16px 22px',
+    backdropFilter: 'blur(20px)',
+    boxShadow: '0 2px 24px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,200,80,0.06)',
+  }
 
   return (
     <motion.div
       initial={{ y: 24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.2, duration: 0.6 }}
-      style={{ display: 'flex', gap: '6px', width: '100%', flexWrap: 'wrap' }}
+      style={{ display: 'flex', gap: '10px', width: '100%', flexWrap: 'wrap' }}
     >
       {/* BTC */}
-      <div style={{
-        flex: 1, display: 'flex', alignItems: 'center', gap: '14px',
-        background: 'rgba(8,4,0,0.92)',
-        border: '1px solid rgba(232,160,32,0.55)',
-        borderTop: '3px solid #E8A020',
-        padding: '14px 20px',
-        backdropFilter: 'blur(16px)',
-        boxShadow: '0 0 0 1px rgba(232,160,32,0.08), 0 4px 32px rgba(0,0,0,0.6), 0 0 20px rgba(232,160,32,0.15)',
-        position: 'relative', overflow: 'hidden', minWidth: 0,
-      }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, rgba(232,160,32,0.07), transparent)', pointerEvents: 'none' }} />
+      <div style={{ ...pill, flex: 1, minWidth: 0, borderTop: '2px solid #E8A020', boxShadow: '0 2px 24px rgba(0,0,0,0.5), 0 0 20px rgba(232,160,32,0.12)' }}>
         <div style={{
-          width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
+          width: '44px', height: '44px', borderRadius: '50%', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '18px', fontWeight: 700, color: '#F7931A',
-          background: 'rgba(247,147,26,0.15)',
-          border: '1px solid rgba(247,147,26,0.6)',
-          boxShadow: '0 0 14px rgba(247,147,26,0.4)',
+          fontSize: '20px', fontWeight: 700, color: '#F7931A',
+          background: 'rgba(247,147,26,0.18)',
+          border: '1px solid rgba(247,147,26,0.55)',
+          boxShadow: '0 0 16px rgba(247,147,26,0.35)',
         }}>₿</div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: '#B07010', textTransform: 'uppercase', marginBottom: '2px' }}>Bitcoin</div>
-          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '22px', color: '#F5C842', letterSpacing: '1px', lineHeight: 1 }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '3px', color: 'rgba(180,120,20,0.7)', textTransform: 'uppercase', marginBottom: '3px' }}>BTC</div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '26px', color: '#F5C842', letterSpacing: '1px', lineHeight: 1 }}>
             ${Math.round(btc).toLocaleString()}
           </div>
         </div>
-        <div style={{ fontSize: '12px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: btcUp ? '#3ed87a' : '#e05050', fontWeight: 700, flexShrink: 0 }}>
+        <div style={{ fontSize: '13px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: btcUp ? '#3ed87a' : '#e05050', fontWeight: 700, flexShrink: 0 }}>
           {btcUp ? '▲' : '▼'} {btcUp ? '+' : ''}{((Math.random() * 0.8) + 0.1).toFixed(2)}%
         </div>
       </div>
 
       {/* CHAOS NEWS */}
       <a href="#news" style={{
-        flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: '10px',
-        background: 'rgba(50,8,0,0.95)',
-        border: '1px solid rgba(255,70,0,0.7)',
-        borderTop: '3px solid #FF4500',
-        padding: '14px 22px',
-        backdropFilter: 'blur(16px)',
-        boxShadow: '0 0 0 1px rgba(255,60,0,0.1), 0 4px 32px rgba(0,0,0,0.6), 0 0 30px rgba(255,60,0,0.3)',
+        ...pill,
+        flex: '0 0 auto',
+        background: 'rgba(40,6,0,0.96)',
+        border: '1px solid rgba(255,70,0,0.65)',
+        borderTop: '2px solid #FF4500',
+        boxShadow: '0 2px 24px rgba(0,0,0,0.5), 0 0 32px rgba(255,60,0,0.25)',
         cursor: 'pointer', textDecoration: 'none',
         animation: 'chaosGlow 2s ease-in-out infinite alternate',
-        position: 'relative', overflow: 'hidden',
-        whiteSpace: 'nowrap',
+        whiteSpace: 'nowrap', gap: '12px',
       }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, rgba(255,60,0,0.15), transparent)', pointerEvents: 'none' }} />
-        <span style={{ fontSize: '20px', animation: 'float 1.5s ease-in-out infinite alternate', display: 'inline-block', position: 'relative' }}>🔥</span>
+        <span style={{ fontSize: '22px', animation: 'float 1.5s ease-in-out infinite alternate', display: 'inline-block' }}>🔥</span>
         <div>
-          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: 'rgba(255,120,40,0.8)', textTransform: 'uppercase', marginBottom: '2px' }}>Live Feed</div>
-          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '20px', color: '#FF6030', letterSpacing: '2px', lineHeight: 1, textShadow: '0 0 16px rgba(255,80,0,0.8)' }}>CHAOS NEWS</div>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '3px', color: 'rgba(255,130,50,0.8)', textTransform: 'uppercase', marginBottom: '3px' }}>Live Feed</div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '24px', color: '#FF6030', letterSpacing: '2px', lineHeight: 1, textShadow: '0 0 18px rgba(255,80,0,0.7)' }}>CHAOS NEWS</div>
         </div>
         <span className="live-pip" style={{ marginLeft: '2px', flexShrink: 0 }} />
       </a>
 
       {/* FINE */}
-      <div style={{
-        flex: 1, display: 'flex', alignItems: 'center', gap: '14px',
-        background: 'rgba(8,4,0,0.92)',
-        border: '1px solid rgba(255,100,0,0.45)',
-        borderTop: '3px solid rgba(255,100,0,0.9)',
-        padding: '14px 20px',
-        backdropFilter: 'blur(16px)',
-        boxShadow: '0 0 0 1px rgba(255,80,0,0.06), 0 4px 32px rgba(0,0,0,0.6), 0 0 20px rgba(255,80,0,0.12)',
-        position: 'relative', overflow: 'hidden', minWidth: 0,
-      }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, rgba(255,80,0,0.08), transparent)', pointerEvents: 'none' }} />
+      <div style={{ ...pill, flex: 1, minWidth: 0, borderTop: '2px solid rgba(255,100,0,0.85)', boxShadow: '0 2px 24px rgba(0,0,0,0.5), 0 0 20px rgba(255,80,0,0.1)' }}>
         <div style={{
-          width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0,
+          width: '44px', height: '44px', borderRadius: '50%', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '18px',
-          background: 'rgba(255,80,0,0.15)',
+          fontSize: '22px',
+          background: 'rgba(255,80,0,0.18)',
           border: '1px solid rgba(255,80,0,0.5)',
-          boxShadow: '0 0 14px rgba(255,80,0,0.35)',
+          boxShadow: '0 0 16px rgba(255,80,0,0.3)',
           animation: 'float 2s ease-in-out infinite alternate',
         }}>🔥</div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: '#B07010', textTransform: 'uppercase', marginBottom: '2px' }}>$FINE</div>
-          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '22px', color: '#F5C842', letterSpacing: '1px', lineHeight: 1 }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '3px', color: 'rgba(180,120,20,0.7)', textTransform: 'uppercase', marginBottom: '3px' }}>$FINE</div>
+          <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '26px', color: '#F5C842', letterSpacing: '1px', lineHeight: 1 }}>
             ${fine.toFixed(6)}
           </div>
         </div>
-        <div style={{ fontSize: '12px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: fineUp ? '#3ed87a' : '#e05050', fontWeight: 700, flexShrink: 0 }}>
+        <div style={{ fontSize: '13px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: fineUp ? '#3ed87a' : '#e05050', fontWeight: 700, flexShrink: 0 }}>
           {fineUp ? '▲' : '▼'} {fineUp ? '+' : ''}{((Math.random() * 2) + 0.1).toFixed(2)}%
         </div>
       </div>
@@ -203,22 +189,22 @@ export default function Hero() {
   }, [])
 
   return (
-    <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden', paddingTop: '72px', paddingBottom: '40px' }}>
+    <section style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'hidden', paddingTop: '80px', paddingBottom: '48px' }}>
 
       {/* Content */}
-      <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', gap: '40px' }}>
+      <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', gap: '36px' }}>
 
-        {/* Two column: text | chaos */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '32px', flexWrap: 'wrap' }}>
+        {/* Three column: text | dog space | chaos card */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: '24px' }}>
 
           {/* Left: Text */}
-          <div ref={titleRef} style={{ flex: '1 1 300px', minWidth: 0 }}>
+          <div ref={titleRef}>
             <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '4px', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '16px' }}>
               The Official Currency of the Meltdown
             </div>
             <h1 style={{
               fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: 'clamp(64px, 10vw, 110px)',
+              fontSize: 'clamp(60px, 9vw, 108px)',
               lineHeight: 0.92,
               marginBottom: '20px',
               background: 'linear-gradient(160deg, #F5C842 0%, #E8A020 45%, #cc5500 100%)',
@@ -235,11 +221,12 @@ export default function Hero() {
             </p>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <a href="#tokenomics" style={{
-                padding: '12px 28px',
+                padding: '13px 30px',
                 background: 'linear-gradient(135deg, #F5C842, #E8A020)',
                 color: '#0C0400', fontFamily: "'Barlow Condensed', sans-serif",
                 fontWeight: 800, fontSize: '14px', letterSpacing: '2px',
                 textTransform: 'uppercase', textDecoration: 'none',
+                borderRadius: '6px',
                 boxShadow: '0 0 24px rgba(232,160,32,0.45)',
                 transition: 'transform 0.15s, box-shadow 0.15s',
               }}
@@ -249,24 +236,28 @@ export default function Hero() {
                 BUY $FINE ☕
               </a>
               <a href="#community" style={{
-                padding: '12px 28px',
-                border: '1px solid var(--card-border)',
+                padding: '13px 30px',
+                border: '1px solid rgba(180,100,10,0.6)',
+                borderRadius: '6px',
                 color: 'var(--gold)', fontFamily: "'Barlow Condensed', sans-serif",
                 fontWeight: 700, fontSize: '14px', letterSpacing: '2px',
                 textTransform: 'uppercase', textDecoration: 'none',
-                background: 'var(--card-bg)', backdropFilter: 'blur(6px)',
+                background: 'rgba(6,3,0,0.7)', backdropFilter: 'blur(6px)',
                 transition: 'border-color 0.2s, color 0.2s',
               }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--gold)'; e.currentTarget.style.color = 'var(--gold-bright)' }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--card-border)'; e.currentTarget.style.color = 'var(--gold)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(180,100,10,0.6)'; e.currentTarget.style.color = 'var(--gold)' }}
               >
                 X COMMUNITY
               </a>
             </div>
           </div>
 
+          {/* Center: empty — dog shows through the fixed background */}
+          <div style={{ width: 'clamp(160px, 22vw, 320px)', height: '1px' }} />
+
           {/* Right: Chaos card */}
-          <div style={{ flex: '0 0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <ChaosCard />
           </div>
         </div>
