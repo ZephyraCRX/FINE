@@ -1,140 +1,99 @@
-import { useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
-
-const slices = [
-  { label: 'Liquidity Pool', pct: 40, color: '#ff6b00', desc: 'Burned. Like everything else.' },
-  { label: 'Community', pct: 30, color: '#ffd700', desc: 'For people who are fine with losing it.' },
-  { label: 'Dev Wallet', pct: 15, color: '#ff2200', desc: 'To pay for the fire extinguisher we never bought.' },
-  { label: 'Marketing', pct: 10, color: '#ff9500', desc: 'Memes, mostly.' },
-  { label: 'Reserve', pct: 5, color: '#cc4400', desc: "In case things get worse. They will." },
+const CARDS = [
+  { icon: '💰', label: 'Total Supply',        val: '1,000,000,000',  sub: '1 Billion $FINE tokens' },
+  { icon: '🔄', label: 'Circulating Supply',  val: '847,320,000',    sub: '84.7% in circulation' },
+  { icon: '🔥', label: 'Burned Forever',      val: '152,680,000',    sub: 'Gone. Like your savings.' },
+  { icon: '💎', label: 'Tax',                  val: '0 / 0',          sub: 'Buy/Sell tax. Totally fine.' },
 ]
 
-function DonutChart() {
-  const size = 220
-  const cx = size / 2
-  const cy = size / 2
-  const r = 80
-  const strokeWidth = 38
-  const circumference = 2 * Math.PI * r
-
-  let accumulated = 0
-  const segments = slices.map((s) => {
-    const dashArray = (s.pct / 100) * circumference
-    const dashOffset = circumference - accumulated * circumference / 100 - circumference / 4
-    accumulated += s.pct
-    return { ...s, dashArray, dashOffset }
-  })
-
-  return (
-    <div className="relative flex items-center justify-center">
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
-        {segments.map((s, i) => (
-          <motion.circle
-            key={s.label}
-            cx={cx}
-            cy={cy}
-            r={r}
-            fill="none"
-            stroke={s.color}
-            strokeWidth={strokeWidth}
-            strokeDasharray={`${s.dashArray} ${circumference - s.dashArray}`}
-            strokeDashoffset={-s.dashOffset + circumference}
-            initial={{ strokeDasharray: `0 ${circumference}` }}
-            whileInView={{ strokeDasharray: `${s.dashArray} ${circumference - s.dashArray}` }}
-            transition={{ duration: 1, delay: i * 0.15, ease: 'easeOut' }}
-            viewport={{ once: true }}
-            style={{ filter: `drop-shadow(0 0 6px ${s.color}88)` }}
-          />
-        ))}
-        {/* Center text */}
-        <text x={cx} y={cy - 8} textAnchor="middle" fill="white" fontSize="13" fontFamily="Courier New" fontWeight="bold">
-          1,000,000,000
-        </text>
-        <text x={cx} y={cy + 10} textAnchor="middle" fill="#ff8c00" fontSize="10" fontFamily="Courier New">
-          TOTAL SUPPLY
-        </text>
-        <text x={cx} y={cy + 26} textAnchor="middle" fill="#666" fontSize="9" fontFamily="Courier New">
-          (it's a lot, relax)
-        </text>
-      </svg>
-    </div>
-  )
-}
+const CONTRACT = '[ To be announced — stay calm ]'
 
 export default function Tokenomics() {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(CONTRACT)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   return (
-    <section id="tokenomics" className="relative z-10 py-28 px-4">
-      {/* Background glow */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% 50%, rgba(255,60,0,0.05), transparent)' }} />
+    <section id="tokenomics" style={{ position: 'relative', zIndex: 2, padding: '96px 24px' }}>
+      {/* Subtle glow */}
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 40% at 50% 50%, rgba(232,160,32,0.04), transparent)', pointerEvents: 'none' }} />
 
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16 fade-up">
-          <p className="text-xs tracking-widest uppercase text-orange-500 mb-3">The Numbers</p>
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">
+      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        {/* Header */}
+        <div className="fade-up" style={{ textAlign: 'center', marginBottom: '56px' }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '4px', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '12px' }}>
             Tokenomics
+          </div>
+          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(40px, 6vw, 64px)', color: '#fff', lineHeight: 1 }}>
+            The Numbers.<br />They're Fine.
           </h2>
-          <p className="text-gray-500 text-sm tracking-widest">
-            We did math so you don't have to. You're welcome.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Donut chart */}
-          <div className="fade-up flex justify-center">
-            <DonutChart />
-          </div>
-
-          {/* Legend */}
-          <div className="fade-up space-y-4">
-            {slices.map((s) => (
-              <div key={s.label} className="flex items-start gap-4 group">
-                <div
-                  className="mt-1 flex-shrink-0 w-3 h-3 rounded-full"
-                  style={{ backgroundColor: s.color, boxShadow: `0 0 8px ${s.color}` }}
-                />
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-0.5">
-                    <span className="text-sm font-bold text-white tracking-wide">{s.label}</span>
-                    <span className="text-sm font-mono text-orange-400">{s.pct}%</span>
-                  </div>
-                  {/* Progress bar */}
-                  <div className="h-0.5 bg-gray-800 rounded overflow-hidden mb-1">
-                    <motion.div
-                      className="h-full rounded"
-                      style={{ backgroundColor: s.color }}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${s.pct}%` }}
-                      transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-                      viewport={{ once: true }}
-                    />
-                  </div>
-                  <p className="text-xs text-gray-500">{s.desc}</p>
-                </div>
+        {/* 4 stat cards */}
+        <div className="fade-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+          {CARDS.map((card, i) => (
+            <motion.div
+              key={card.label}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              viewport={{ once: true }}
+              style={{
+                background: 'var(--card-bg)',
+                border: '1px solid var(--card-border)',
+                padding: '28px 24px',
+                backdropFilter: 'blur(10px)',
+                transition: 'border-color 0.2s',
+              }}
+              whileHover={{ borderColor: 'rgba(232,160,32,0.6)' }}
+            >
+              <div style={{ fontSize: '28px', marginBottom: '14px' }}>{card.icon}</div>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '2.5px', color: '#B07010', textTransform: 'uppercase', marginBottom: '8px' }}>
+                {card.label}
               </div>
-            ))}
-          </div>
+              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '28px', color: 'var(--gold-bright)', marginBottom: '6px', letterSpacing: '1px' }}>
+                {card.val}
+              </div>
+              <div style={{ fontFamily: 'Barlow, sans-serif', fontSize: '12px', color: 'rgba(232,213,160,0.5)' }}>
+                {card.sub}
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Stats row */}
-        <div className="fade-up mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-orange-900/30 pt-12">
-          {[
-            { label: 'Tax', value: '0%', sub: 'buy & sell' },
-            { label: 'Mint', value: 'Revoked', sub: 'obviously' },
-            { label: 'Freeze', value: 'Revoked', sub: 'let it burn' },
-            { label: 'Utility', value: 'None', sub: 'as promised' },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center p-4 border border-orange-900/30"
-              style={{ background: 'rgba(255,80,0,0.04)' }}>
-              <p className="text-2xl sm:text-3xl font-black text-orange-400 font-mono">{stat.value}</p>
-              <p className="text-xs text-gray-400 uppercase tracking-widest mt-1">{stat.label}</p>
-              <p className="text-xs text-gray-600 mt-0.5">{stat.sub}</p>
-            </div>
-          ))}
+        {/* Contract address */}
+        <div className="fade-up" style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', padding: '24px 28px', backdropFilter: 'blur(10px)' }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '3px', color: '#B07010', textTransform: 'uppercase', marginBottom: '12px' }}>
+            Contract Address
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: '13px', color: 'var(--text-light)', flex: 1, minWidth: 0, wordBreak: 'break-all' }}>
+              {CONTRACT}
+            </span>
+            <button
+              onClick={handleCopy}
+              style={{
+                padding: '8px 18px', flexShrink: 0,
+                background: copied ? 'rgba(232,160,32,0.2)' : 'transparent',
+                border: `1px solid ${copied ? 'var(--gold)' : 'var(--card-border)'}`,
+                color: copied ? 'var(--gold-bright)' : 'var(--gold)',
+                fontFamily: "'Barlow Condensed', sans-serif", fontSize: '12px',
+                letterSpacing: '2px', textTransform: 'uppercase', cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >
+              {copied ? 'COPIED!' : 'COPY'}
+            </button>
+          </div>
+          <div style={{ marginTop: '12px', fontSize: '11px', color: 'rgba(160,100,20,0.6)', fontFamily: 'Barlow, sans-serif' }}>
+            ⚠️ Always verify the contract address. The world is chaotic. <strong style={{ color: 'rgba(160,100,20,0.9)' }}>But this address is fine.</strong>
+          </div>
         </div>
       </div>
     </section>

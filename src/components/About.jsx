@@ -1,83 +1,83 @@
 import { motion } from 'framer-motion'
 
-const cards = [
-  {
-    icon: '🔥',
-    title: 'No Roadmap',
-    body: "We're already at the final destination. You're sitting in a burning room. There's nowhere left to go.",
-  },
-  {
-    icon: '☕',
-    title: 'No Utility',
-    body: "What do you do with $FINE? You hold it. You sip your coffee. You watch the charts melt. That's it.",
-  },
-  {
-    icon: '⚠️',
-    title: 'No Lies',
-    body: "Every other coin promises the moon. We promise the inside of a furnace. At least we're honest about it.",
-  },
-  {
-    icon: '🟡',
-    title: 'Pure Stoicism',
-    body: "The portfolio is red. The market is crashing. You put on your yellow hat. You nod. Everything is fine.",
-  },
+const LORE = [
+  { year: '2008', text: 'The financial system collapsed. The dog watched.' },
+  { year: '2020', text: 'A global pandemic swept the planet. The dog made coffee.' },
+  { year: '2022', text: 'Wars erupted. Markets crashed. Crypto imploded. The dog adjusted his hat.' },
+  { year: '2024', text: null, html: 'The world reached peak chaos. Someone finally minted the dog. <strong style="color:#F5C842">$FINE was born.</strong>' },
+  { year: 'NOW',  text: null, html: 'The world is still burning. The dog is still sitting. <strong style="color:#F5C842">Everything is fine.</strong>' },
 ]
 
 export default function About() {
   return (
-    <section id="about" className="relative z-10 py-28 px-4">
-      <div className="max-w-5xl mx-auto">
-        {/* Section header */}
-        <div className="text-center mb-16 fade-up">
-          <p className="text-xs tracking-widest uppercase text-orange-500 mb-3">What is this</p>
-          <h2 className="text-4xl sm:text-5xl font-black mb-6" style={{
-            background: 'linear-gradient(to right, #ffffff, #ff8c00)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            A Meme Coin for the<br />End of Everything
+    <section id="about" style={{ position: 'relative', zIndex: 2, padding: '96px 24px' }}>
+      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+
+        {/* Header */}
+        <div className="fade-up" style={{ textAlign: 'center', marginBottom: '56px' }}>
+          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '4px', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: '12px' }}>
+            About $FINE
+          </div>
+          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(40px, 6vw, 64px)', color: '#fff', lineHeight: 1 }}>
+            The Lore of the Dog<br />Who Didn't Panic
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed text-base sm:text-lg">
-            $FINE was born the moment the third red candle hit and someone in the trading room said
-            <em className="text-orange-400 not-italic"> "it's fine"</em>. It wasn't fine.
-            Nothing was fine. And yet — here we are.
-          </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {cards.map((card, i) => (
-            <motion.div
-              key={card.title}
-              className="fade-up border border-orange-900/40 p-6 sm:p-8 relative overflow-hidden group"
-              style={{
-                background: 'rgba(255,80,0,0.04)',
-                backdropFilter: 'blur(4px)',
-              }}
-              whileHover={{ borderColor: 'rgba(255,140,0,0.6)' }}
-              transition={{ duration: 0.2 }}
-            >
-              {/* Corner glow on hover */}
-              <div className="absolute top-0 left-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: 'radial-gradient(circle, rgba(255,100,0,0.15), transparent)' }} />
+        {/* Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '48px', alignItems: 'start' }}>
 
-              <span className="text-3xl mb-4 block">{card.icon}</span>
-              <h3 className="text-lg font-bold text-orange-400 tracking-widest uppercase mb-2">
-                {card.title}
-              </h3>
-              <p className="text-gray-400 leading-relaxed text-sm">{card.body}</p>
-            </motion.div>
-          ))}
-        </div>
+          {/* Timeline */}
+          <div className="fade-up">
+            {LORE.map((item, i) => (
+              <motion.div
+                key={item.year}
+                style={{ display: 'flex', gap: '20px', paddingBottom: i < LORE.length - 1 ? '28px' : 0 }}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: '52px' }}>
+                  <div style={{
+                    fontFamily: "'Bebas Neue', sans-serif", fontSize: '15px', letterSpacing: '1px',
+                    color: item.year === 'NOW' ? '#F5C842' : '#B07010',
+                    background: 'var(--card-bg)',
+                    border: `1px solid ${item.year === 'NOW' ? 'var(--gold)' : 'var(--card-border)'}`,
+                    padding: '3px 6px', textAlign: 'center', width: '100%',
+                  }}>
+                    {item.year}
+                  </div>
+                  {i < LORE.length - 1 && (
+                    <div style={{ width: '1px', flex: 1, minHeight: '20px', background: 'rgba(180,100,10,0.3)', marginTop: '4px' }} />
+                  )}
+                </div>
+                <p style={{ fontFamily: 'Barlow, sans-serif', fontSize: '14px', color: 'rgba(232,213,160,0.7)', lineHeight: 1.65, paddingTop: '4px' }}
+                  dangerouslySetInnerHTML={item.html ? { __html: item.html } : undefined}
+                >
+                  {item.text}
+                </p>
+              </motion.div>
+            ))}
+          </div>
 
-        {/* Quote block */}
-        <div className="fade-up mt-16 border-l-4 border-orange-500 pl-6 py-2">
-          <p className="text-xl sm:text-2xl text-white/80 italic leading-relaxed">
-            "Stop checking the charts. Put on your yellow hat.<br />
-            <span className="text-orange-400 not-italic font-bold">Everything is $FINE.</span>"
-          </p>
-          <p className="text-xs text-gray-600 mt-3 tracking-widest uppercase">— The Dog, probably</p>
+          {/* Quote + stats */}
+          <div className="fade-up" style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', padding: '32px', backdropFilter: 'blur(12px)' }}>
+            <div style={{ fontSize: '36px', marginBottom: '16px', textAlign: 'center' }}>🔥</div>
+            <blockquote style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '28px', color: '#E8C870', lineHeight: 1.2, marginBottom: '8px', textAlign: 'center' }}>
+              "This is fine."
+            </blockquote>
+            <cite style={{ display: 'block', textAlign: 'center', fontSize: '12px', color: '#B07010', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '2px', marginBottom: '28px' }}>
+              — The Dog, always
+            </cite>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', borderTop: '1px solid var(--card-border)', paddingTop: '24px' }}>
+              {[{ val: '∞', label: 'Chaos Survived' }, { val: '0', label: 'Panics Given' }, { val: '☕', label: 'Coffees Consumed' }].map(s => (
+                <div key={s.label} style={{ textAlign: 'center' }}>
+                  <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '28px', color: '#F5C842', marginBottom: '4px' }}>{s.val}</div>
+                  <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '1.5px', color: '#B07010', textTransform: 'uppercase', lineHeight: 1.3 }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

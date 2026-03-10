@@ -1,111 +1,156 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
-const NEWS = [
+const TOPICS = [
   {
-    category: '🌍 War Monitor',
-    headline: 'New geopolitical tensions reported across several regions.',
-    tag: 'Global panic detected.',
+    key: 'war',
+    icon: '🎯',
+    label: 'War Monitor',
+    query: 'latest war conflict military news today 2026',
+    footer: 'Global panic detected.',
     fine: 'Everything is fine.',
-    color: '#ff4400',
+    fallback: [
+      { headline: 'New geopolitical tensions reported across several regions', source: 'Reuters', time: '2h ago' },
+      { headline: 'Diplomatic talks stall as military posturing increases', source: 'BBC', time: '4h ago' },
+      { headline: 'UN emergency session called over escalating crisis', source: 'AP', time: '6h ago' },
+    ],
   },
   {
-    category: '⚠️ Markets & Conflict',
-    headline: 'Markets reacting nervously to rising global uncertainty.',
-    tag: 'Another bad headline.',
+    key: 'markets',
+    icon: '⚠️',
+    label: 'Markets & Conflict',
+    query: 'financial markets global economy crisis news today 2026',
+    footer: 'Another bad headline.',
     fine: 'Still fine.',
-    color: '#ff8c00',
+    fallback: [
+      { headline: 'Markets reacting nervously to rising global uncertainty', source: 'Bloomberg', time: '1h ago' },
+      { headline: 'Fed signals more hikes as inflation bites again', source: 'WSJ', time: '3h ago' },
+      { headline: 'Crypto down 18% in 4 hours. Analysts unsurprised.', source: 'CoinDesk', time: '5h ago' },
+    ],
   },
   {
-    category: '🌐 Global Leaders',
-    headline: 'International leaders announce emergency meetings to contain escalation.',
-    tag: 'Emergency meetings everywhere.',
+    key: 'leaders',
+    icon: '🌐',
+    label: 'Global Leaders',
+    query: 'world leaders political summit diplomacy news today 2026',
+    footer: 'Emergency meetings everywhere.',
     fine: 'Totally fine.',
-    color: '#ffaa00',
-  },
-  {
-    category: '📉 Crypto Markets',
-    headline: 'Bitcoin drops 18% in 4 hours. Altcoins down 40–90%.',
-    tag: 'Your portfolio is bleeding.',
-    fine: 'Financially fine.',
-    color: '#ff6600',
-  },
-  {
-    category: '🔥 Environment',
-    headline: 'Record temperatures recorded globally. Again.',
-    tag: 'Literally on fire.',
-    fine: 'Thermally fine.',
-    color: '#ff3300',
-  },
-  {
-    category: '☕ $FINE Update',
-    headline: '$FINE remains stable. The dog has not moved. Coffee still hot.',
-    tag: 'No changes.',
-    fine: 'Extremely fine.',
-    color: '#ffd700',
+    fallback: [
+      { headline: 'G7 leaders call emergency summit amid rising tensions', source: 'Politico', time: '2h ago' },
+      { headline: 'World leaders announce meetings to contain escalation', source: 'Guardian', time: '4h ago' },
+      { headline: 'White House issues statement: situation is developing', source: 'NYT', time: '7h ago' },
+    ],
   },
 ]
 
-export default function NewsSection() {
+async function fetchLiveNews(topic, apiKey) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 600,
+      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+      system: `You are a news aggregator for a memecoin website. Search for the latest real news and return ONLY a JSON array of exactly 3 items. Each: {"headline":"max 12 words","source":"outlet name","time":"e.g. 2h ago"}. Respond ONLY with valid JSON array, no markdown.`,
+      messages: [{ role: 'user', content: `Search: ${topic.query}. Return 3 items as JSON array.` }],
+    }),
+  })
+  const data = await res.json()
+  const text = data.content?.map(b => b.type === 'text' ? b.text : '').join('') || ''
+  const clean = text.replace(/```json|```/g, '').trim()
+  return JSON.parse(clean)
+}
+
+function NewsCard({ topic, apiKey }) {
+  const [items, setItems] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+
+  const load = async () => {
+    if (!apiKey) { setItems(topic.fallback); return }
+    setLoading(true); setError(false)
+    try {
+      const results = await fetchLiveNews(topic, apiKey)
+      setItems(results)
+    } catch {
+      setError(true)
+      setItems(topic.fallback)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => { const t = setTimeout(load, topic.key === 'war' ? 1200 : topic.key === 'markets' ? 1800 : 2400); return () => clearTimeout(t) }, [apiKey])
+
   return (
-    <section id="news" className="relative z-10 py-20 px-4">
-      {/* Subtle top border glow */}
-      <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: 'linear-gradient(to right, transparent, rgba(255,100,0,0.4), transparent)' }} />
+    <motion.div
+      className="fade-up"
+      style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', padding: '20px', backdropFilter: 'blur(10px)', display: 'flex', flexDirection: 'column' }}
+      whileHover={{ borderColor: 'rgba(232,160,32,0.5)' }}
+      transition={{ duration: 0.2 }}
+    >
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', paddingBottom: '12px', borderBottom: '1px solid rgba(180,100,10,0.2)' }}>
+        <span style={{ fontSize: '16px' }}>{topic.icon}</span>
+        <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '12px', letterSpacing: '2px', color: 'var(--gold)', textTransform: 'uppercase', fontWeight: 700 }}>
+          {topic.label}
+        </span>
+      </div>
 
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-10 fade-up">
-          <div>
-            <p className="text-xs tracking-widest uppercase text-orange-500 mb-1">Live Feed</p>
-            <h2 className="text-3xl sm:text-4xl font-black text-white">Latest World News</h2>
+      {/* News items */}
+      <div style={{ flex: 1, marginBottom: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {loading ? (
+          <div style={{ color: 'rgba(160,100,20,0.6)', fontSize: '12px', display: 'flex', alignItems: 'center', padding: '8px 0' }}>
+            <span className="nc-spinner" /> Fetching live news...
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-xs text-gray-500 tracking-widest uppercase">Live</span>
+        ) : items ? items.map((item, i) => (
+          <div key={i} style={{ paddingBottom: i < items.length - 1 ? '10px' : 0, borderBottom: i < items.length - 1 ? '1px solid rgba(180,100,10,0.12)' : 'none' }}>
+            <div style={{ fontFamily: 'Barlow, sans-serif', fontSize: '13px', color: '#E8C870', lineHeight: 1.5, marginBottom: '4px' }}>{item.headline}</div>
+            <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', color: 'rgba(160,100,20,0.7)', letterSpacing: '1px' }}>
+              {item.source} · {item.time} {error ? '(cached)' : ''}
+            </div>
           </div>
+        )) : null}
+      </div>
+
+      {/* Footer */}
+      <div style={{ fontFamily: 'Barlow, sans-serif', fontSize: '12px', color: 'rgba(160,100,20,0.6)', borderTop: '1px solid rgba(180,100,10,0.2)', paddingTop: '10px' }}>
+        {topic.footer} <strong style={{ color: 'var(--gold)' }}>{topic.fine}</strong>
+        {apiKey && (
+          <button onClick={load} style={{ marginLeft: '8px', background: 'none', border: 'none', color: 'rgba(232,160,32,0.5)', cursor: 'pointer', fontSize: '14px' }} title="Refresh">↻</button>
+        )}
+      </div>
+    </motion.div>
+  )
+}
+
+export default function NewsSection({ apiKey }) {
+  return (
+    <section id="news" style={{ position: 'relative', zIndex: 2, padding: '0 24px 80px' }}>
+      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+
+        {/* Fire line */}
+        <div style={{ height: '2px', background: 'linear-gradient(to right, transparent, rgba(232,160,32,0.5), rgba(255,80,0,0.7), rgba(232,160,32,0.5), transparent)', marginBottom: '48px', boxShadow: '0 0 12px rgba(255,100,0,0.4)' }} />
+
+        <div className="fade-up" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
+          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(28px, 4vw, 40px)', color: '#fff', display: 'flex', alignItems: 'center' }}>
+            <span className="live-pip" />Latest World News
+          </h2>
+          {!apiKey && (
+            <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '2px', color: 'rgba(160,100,20,0.5)', textTransform: 'uppercase' }}>
+              cached headlines — add API key for live
+            </span>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {NEWS.map((item, i) => (
-            <motion.div
-              key={i}
-              className="fade-up border border-orange-900/40 p-5 relative overflow-hidden group hover:border-orange-600/50 transition-all duration-300"
-              style={{ background: 'rgba(10,4,0,0.7)', backdropFilter: 'blur(6px)' }}
-              whileHover={{ y: -2 }}
-              transition={{ duration: 0.2 }}
-            >
-              {/* Left accent line */}
-              <div className="absolute left-0 top-0 bottom-0 w-0.5"
-                style={{ background: item.color, boxShadow: `0 0 8px ${item.color}` }} />
-
-              <p className="text-xs font-bold mb-2 pl-1" style={{ color: item.color }}>
-                {item.category}
-              </p>
-              <p className="text-sm text-gray-300 leading-relaxed mb-3 pl-1">
-                {item.headline}
-              </p>
-              <p className="text-xs text-gray-600 pl-1">
-                {item.tag}{' '}
-                <span className="font-bold" style={{ color: item.color }}>
-                  {item.fine}
-                </span>
-              </p>
-
-              {/* Corner glow on hover */}
-              <div className="absolute bottom-0 right-0 w-20 h-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: `radial-gradient(circle, ${item.color}15, transparent)` }} />
-            </motion.div>
-          ))}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+          {TOPICS.map(topic => <NewsCard key={topic.key} topic={topic} apiKey={apiKey} />)}
         </div>
-
-        {/* Bottom tagline */}
-        <motion.p
-          className="fade-up text-center text-xs text-gray-700 mt-8 tracking-widest uppercase"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-        >
-          All headlines are equally fine. None of this is financial advice. All of this is fine.
-        </motion.p>
       </div>
     </section>
   )
