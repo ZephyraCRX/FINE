@@ -178,65 +178,15 @@ function PriceTicker() {
 function FireBg() {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
-      {/* Base deep dark */}
-      <div className="absolute inset-0" style={{ background: '#0d0600' }} />
-
-      {/* Lava/fire texture layers */}
+      <img
+        src="/hero-bg.jpg"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover object-center"
+        style={{ filter: 'brightness(0.6) saturate(1.1)' }}
+      />
+      {/* Light top gradient so navbar text is readable */}
       <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse 100% 70% at 50% 100%, rgba(200,60,0,0.9) 0%, rgba(140,30,0,0.7) 30%, rgba(60,10,0,0.4) 60%, transparent 80%)',
-      }} />
-      <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse 120% 50% at 30% 110%, rgba(255,120,0,0.5) 0%, transparent 60%)',
-      }} />
-      <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse 80% 40% at 70% 110%, rgba(255,80,0,0.4) 0%, transparent 55%)',
-      }} />
-
-      {/* Upper darkness with subtle glow from fire below */}
-      <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse 80% 60% at 50% 20%, rgba(20,8,0,0.85) 0%, transparent 100%)',
-      }} />
-
-      {/* Center ambient glow around dog */}
-      <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse 50% 60% at 50% 55%, rgba(180,60,0,0.35) 0%, transparent 65%)',
-      }} />
-
-      {/* Flame shapes at bottom */}
-      {Array.from({ length: 22 }).map((_, i) => {
-        const left = (i / 22) * 100 + (Math.sin(i * 1.7) * 2)
-        const height = 80 + Math.sin(i * 2.3) * 80
-        const width = 40 + Math.cos(i * 1.1) * 30
-        return (
-          <div
-            key={i}
-            className="flame absolute bottom-0"
-            style={{
-              left: `${left}%`,
-              width: `${width}px`,
-              height: `${height}px`,
-              animationDelay: `${(i * 0.05) % 0.3}s`,
-              animationDuration: `${0.08 + (i % 5) * 0.02}s`,
-              background: `radial-gradient(ellipse 55% 100% at 50% 100%,
-                rgba(255,230,80,0.95) 0%,
-                rgba(255,120,0,0.9) 30%,
-                rgba(200,30,0,0.75) 60%,
-                transparent 100%)`,
-              borderRadius: '50% 50% 20% 20% / 60% 60% 40% 40%',
-              filter: 'blur(3px)',
-              transformOrigin: 'bottom center',
-            }}
-          />
-        )
-      })}
-
-      {/* Floor heat line */}
-      <div className="absolute bottom-0 left-0 right-0 h-6"
-        style={{ background: 'rgba(255,120,0,0.7)', filter: 'blur(4px)' }} />
-
-      {/* Vignette */}
-      <div className="absolute inset-0" style={{
-        background: 'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%)',
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 40%, transparent 70%, rgba(0,0,0,0.4) 100%)',
       }} />
     </div>
   )
@@ -262,7 +212,7 @@ export default function Hero() {
         <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-4">
 
           {/* Left: Text */}
-          <div ref={titleRef} className="flex-1 text-left max-w-sm">
+          <div ref={titleRef} className="flex-1 text-left min-w-0">
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -271,7 +221,7 @@ export default function Hero() {
             >
               The Official Currency of the Meltdown
             </motion.p>
-            <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black leading-none mb-6"
+            <h1 className="text-4xl sm:text-5xl xl:text-6xl font-black leading-tight mb-6"
               style={{
                 background: 'linear-gradient(160deg, #ffd700 0%, #ff8c00 50%, #ff3300 100%)',
                 WebkitBackgroundClip: 'text',
@@ -315,15 +265,19 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Center: Dog */}
+          {/* Center: Coin logo */}
           <motion.div
-            initial={{ y: 30, opacity: 0, scale: 0.9 }}
+            initial={{ y: 30, opacity: 0, scale: 0.85 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             transition={{ delay: 0.5, duration: 0.9, ease: 'easeOut' }}
             className="float-anim flex-shrink-0"
-            style={{ width: '260px', height: '300px' }}
+            style={{ width: '260px' }}
           >
-            <DogMascot />
+            <img
+              src="/logo-coin.jpg"
+              alt="$FINE coin"
+              className="w-full h-auto rounded-full drop-shadow-[0_0_60px_rgba(255,180,0,0.8)]"
+            />
           </motion.div>
 
           {/* Right: Chaos widget */}

@@ -58,7 +58,7 @@ export default function Navbar() {
         <a href="#" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-full overflow-hidden border border-orange-700/60 flex-shrink-0"
             style={{ boxShadow: '0 0 12px rgba(200,120,0,0.4)' }}>
-            <LogoIcon />
+            <img src="/logo-coin.jpg" alt="$FINE logo" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col leading-tight">
             <span className="font-black text-sm tracking-widest text-orange-400 group-hover:text-yellow-400 transition-colors uppercase">
