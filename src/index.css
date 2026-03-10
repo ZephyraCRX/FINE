@@ -99,3 +99,9 @@ h1, h2, h3, .bebas {
   50% { box-shadow: 0 0 14px var(--gold-bright); }
 }
 .chaos-bar-fill { animation: bar-glow 2s ease-in-out infinite; }
+
+/* ── Chaos News button glow ── */
+@keyframes chaosGlow {
+  0%   { box-shadow: 0 0 24px rgba(255,80,0,0.2), 0 0 48px rgba(255,80,0,0.08), inset 0 1px 0 rgba(255,100,0,0.2); }
+  100% { box-shadow: 0 0 40px rgba(255,80,0,0.45), 0 0 80px rgba(255,80,0,0.15), inset 0 1px 0 rgba(255,120,0,0.4); }
+}

@@ -84,63 +84,108 @@ function ChaosCard() {
 function PriceTicker() {
   const [btc, setBtc] = useState(70944)
   const [fine, setFine] = useState(0.000237)
+  const [btcUp, setBtcUp] = useState(true)
+  const [fineUp, setFineUp] = useState(true)
 
   useEffect(() => {
     const iv = setInterval(() => {
-      setBtc(p => Math.max(60000, p + (Math.random() - 0.49) * 180))
-      setFine(p => p * (1 + (Math.random() - 0.49) * 0.018))
+      setBtc(p => { const delta = (Math.random() - 0.49) * 180; setBtcUp(delta >= 0); return Math.max(60000, p + delta) })
+      setFine(p => { const mult = 1 + (Math.random() - 0.49) * 0.018; setFineUp(mult >= 1); return p * mult })
     }, 3200)
     return () => clearInterval(iv)
   }, [])
-
-  const tickStyle = {
-    display: 'flex', alignItems: 'center', gap: '10px',
-    border: '1px solid var(--card-border)',
-    padding: '11px 20px',
-    background: 'var(--card-bg)',
-    backdropFilter: 'blur(8px)',
-    flex: 1,
-  }
-  const iconStyle = {
-    width: '28px', height: '28px', borderRadius: '50%',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontSize: '14px', background: 'rgba(232,160,32,0.15)',
-    border: '1px solid rgba(232,160,32,0.3)',
-    flexShrink: 0,
-  }
-  const nameStyle = { fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', letterSpacing: '2px', color: '#8a6020', textTransform: 'uppercase' }
-  const priceStyle = { fontFamily: "'Bebas Neue', sans-serif", fontSize: '18px', color: 'var(--text-light)', marginLeft: 'auto' }
 
   return (
     <motion.div
       initial={{ y: 24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.2, duration: 0.6 }}
-      style={{ display: 'flex', gap: '10px', width: '100%', flexWrap: 'wrap' }}
+      style={{ display: 'flex', gap: '8px', width: '100%', flexWrap: 'wrap' }}
     >
-      <div style={tickStyle}>
-        <div style={iconStyle}>₿</div>
-        <span style={nameStyle}>BTC</span>
-        <span style={priceStyle}>${Math.round(btc).toLocaleString()}</span>
+      {/* BTC */}
+      <div style={{
+        flex: 1, display: 'flex', alignItems: 'center', gap: '12px',
+        background: 'linear-gradient(135deg, rgba(20,10,0,0.9) 0%, rgba(40,20,0,0.7) 100%)',
+        border: '1px solid rgba(232,160,32,0.35)',
+        borderTop: '2px solid rgba(232,160,32,0.6)',
+        padding: '12px 18px',
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 0 20px rgba(232,160,32,0.08), inset 0 1px 0 rgba(232,160,32,0.1)',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 100% at 0% 50%, rgba(232,160,32,0.05), transparent)', pointerEvents: 'none' }} />
+        <div style={{
+          width: '32px', height: '32px', borderRadius: '50%', flexShrink: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '16px',
+          background: 'radial-gradient(circle, rgba(247,147,26,0.3) 0%, rgba(232,160,32,0.1) 100%)',
+          border: '1px solid rgba(247,147,26,0.5)',
+          boxShadow: '0 0 10px rgba(247,147,26,0.3)',
+        }}>₿</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: 'rgba(180,120,20,0.7)', textTransform: 'uppercase' }}>Bitcoin</span>
+          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '20px', color: 'var(--gold-bright)', letterSpacing: '1px', lineHeight: 1 }}>
+            ${Math.round(btc).toLocaleString()}
+          </span>
+        </div>
+        <span style={{ marginLeft: 'auto', fontSize: '11px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: btcUp ? '#40d080' : '#e05050', fontWeight: 700 }}>
+          {btcUp ? '▲' : '▼'} {btcUp ? '+' : ''}{((Math.random() * 0.8) + 0.1).toFixed(2)}%
+        </span>
       </div>
 
-      <button style={{
-        ...tickStyle,
-        flex: '0 0 auto',
-        cursor: 'pointer',
-        fontFamily: "'Barlow Condensed', sans-serif",
-        fontSize: '13px', fontWeight: 700, letterSpacing: '2px',
-        color: 'var(--gold)', textTransform: 'uppercase',
-        gap: '8px',
+      {/* CHAOS NEWS */}
+      <a href="#news" style={{
+        flex: '0 0 auto', display: 'flex', alignItems: 'center', gap: '10px',
+        background: 'linear-gradient(135deg, rgba(60,10,0,0.95) 0%, rgba(120,30,0,0.7) 50%, rgba(60,10,0,0.95) 100%)',
+        border: '1px solid rgba(255,80,0,0.5)',
+        borderTop: '2px solid rgba(255,100,0,0.8)',
+        padding: '12px 20px',
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 0 24px rgba(255,80,0,0.2), 0 0 48px rgba(255,80,0,0.08), inset 0 1px 0 rgba(255,100,0,0.2)',
+        cursor: 'pointer', textDecoration: 'none',
+        animation: 'chaosGlow 2s ease-in-out infinite alternate',
+        position: 'relative', overflow: 'hidden',
+        whiteSpace: 'nowrap',
       }}>
-        <div style={iconStyle}>📰</div>
-        Chaos News
-      </button>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255,60,0,0.08), transparent)', pointerEvents: 'none' }} />
+        <span style={{ fontSize: '18px', animation: 'float 1.5s ease-in-out infinite alternate', display: 'inline-block' }}>🔥</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: 'rgba(255,120,40,0.7)', textTransform: 'uppercase' }}>Live Feed</span>
+          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '18px', color: '#FF6020', letterSpacing: '2px', lineHeight: 1, textShadow: '0 0 12px rgba(255,80,0,0.6)' }}>CHAOS NEWS</span>
+        </div>
+        <span className="live-pip" style={{ marginLeft: '4px' }} />
+      </a>
 
-      <div style={tickStyle}>
-        <div style={iconStyle}>🔥</div>
-        <span style={nameStyle}>FINE</span>
-        <span style={priceStyle}>${fine.toFixed(6)}</span>
+      {/* FINE */}
+      <div style={{
+        flex: 1, display: 'flex', alignItems: 'center', gap: '12px',
+        background: 'linear-gradient(135deg, rgba(20,10,0,0.9) 0%, rgba(40,20,0,0.7) 100%)',
+        border: '1px solid rgba(232,160,32,0.35)',
+        borderTop: '2px solid rgba(255,100,0,0.6)',
+        padding: '12px 18px',
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 0 20px rgba(255,80,0,0.08), inset 0 1px 0 rgba(255,100,0,0.1)',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 100% at 100% 50%, rgba(255,80,0,0.05), transparent)', pointerEvents: 'none' }} />
+        <div style={{
+          width: '32px', height: '32px', borderRadius: '50%', flexShrink: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '16px',
+          background: 'radial-gradient(circle, rgba(255,80,0,0.3) 0%, rgba(232,160,32,0.1) 100%)',
+          border: '1px solid rgba(255,80,0,0.4)',
+          boxShadow: '0 0 10px rgba(255,80,0,0.25)',
+          animation: 'float 2s ease-in-out infinite alternate',
+        }}>🔥</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', letterSpacing: '3px', color: 'rgba(180,120,20,0.7)', textTransform: 'uppercase' }}>$FINE</span>
+          <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '20px', color: 'var(--gold-bright)', letterSpacing: '1px', lineHeight: 1 }}>
+            ${fine.toFixed(6)}
+          </span>
+        </div>
+        <span style={{ marginLeft: 'auto', fontSize: '11px', fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: '1px', color: fineUp ? '#40d080' : '#e05050', fontWeight: 700 }}>
+          {fineUp ? '▲' : '▼'} {fineUp ? '+' : ''}{((Math.random() * 2) + 0.1).toFixed(2)}%
+        </span>
       </div>
     </motion.div>
   )
